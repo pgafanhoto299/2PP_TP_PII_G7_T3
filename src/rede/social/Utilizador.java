@@ -5,17 +5,15 @@
 package rede.social;
 
 import java.time.LocalDate;
-import java.time.Month;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /**
  *
  * @author guga
  */
 public class Utilizador {
-    private StringBuilder senha, username;
-    private String email, id, dataNasc;
+    private String senha, username, email, dataNasc;
+    private int id;
     private ArrayList<Integer> seguidores, seguindo;
     private LocalDate dataCriac;
 
@@ -28,11 +26,11 @@ public class Utilizador {
     }
     
     
-    public StringBuilder getSenha() {
+    public String getSenha() {
         return senha;
     }
 
-    public StringBuilder getUsername() {
+    public String getUsername() {
         return username;
     }
 
@@ -40,7 +38,7 @@ public class Utilizador {
         return email;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -56,11 +54,11 @@ public class Utilizador {
         return dataNasc;
     }
 
-    public void setSenha(StringBuilder senha) {
+    public void setSenha(String senha) {
         this.senha = senha;
     }
 
-    public void setUsername(StringBuilder username) {
+    public void setUsername(String username) {
         this.username = username;
     }
 
@@ -68,7 +66,7 @@ public class Utilizador {
         this.email = email;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -84,7 +82,7 @@ public class Utilizador {
         this.dataNasc = dataNasc;
     }
 
-    public Utilizador(StringBuilder senha, StringBuilder username, String email, String id, String dataNasc) {
+    public Utilizador(String senha, String username, String email, int id, String dataNasc) {
         this.senha = senha;
         this.username = username;
         this.email = email;

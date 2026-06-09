@@ -47,5 +47,11 @@ public class Mensagem {
         this.dataEnvio = dataEnvio;
     }
     
-    
+    public void Mensagem (  String conteudo,int remetenteID, int destinatarioID, int LocalDateTime dataEnvio){
+this.conteudo=conteudo;
+        this. destinatarioID= destinatarioID;
+        this.dataEnvio=dataEnvio;
+        this.remetenteID=remetenteID;
+
+    }
 }

@@ -77,7 +77,7 @@ public LocalDate getDataCriac() {
     }
 
     public void setEmail(String email) {
-        if(verificar_email(emil))
+        if(verificar_email(email))
         this.email = email;
     }
 
@@ -97,12 +97,12 @@ public LocalDate getDataCriac() {
         this.dataNasc = dataNasc;
     }
     
-    public static verificar_email(String emailver){
-        if(emailver.matches(".+@.+\\.com"){
+    public static boolean  verificar_email(String emailver){
+        if(emailver.matches(".+@.+\\.com")){
       System.out.println("email valido");
             return true;
         }
- System.out.println("email invalidp");
+ System.out.println("email invalido");
         return false;
     }
    
@@ -119,17 +119,4 @@ public LocalDate getDataCriac() {
       System.out.println("usuaro invalido deve ter numeros letras e caractere  especiais");
     return false;
   }
-
-
-    
-
-   
-    
-    
-    }
-
-
-
-
-    
 }

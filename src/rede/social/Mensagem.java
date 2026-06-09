@@ -14,6 +14,15 @@ public class Mensagem {
     private String conteudo;
     private int remetenteID, destinatarioID;
     private LocalDateTime dataEnvio;
+    
+    
+    public void Mensagem (  String conteudo,int remetenteID, int destinatarioID, LocalDateTime dataEnvio){
+        this.conteudo=conteudo;
+        this. destinatarioID= destinatarioID;
+        this.dataEnvio=dataEnvio;
+        this.remetenteID=remetenteID;
+
+    }
 
     public String getConteudo() {
         return conteudo;
@@ -45,13 +54,5 @@ public class Mensagem {
 
     public void setDataEnvio(LocalDateTime dataEnvio) {
         this.dataEnvio = dataEnvio;
-    }
-    
-    public void Mensagem (  String conteudo,int remetenteID, int destinatarioID, int LocalDateTime dataEnvio){
-this.conteudo=conteudo;
-        this. destinatarioID= destinatarioID;
-        this.dataEnvio=dataEnvio;
-        this.remetenteID=remetenteID;
-
     }
 }

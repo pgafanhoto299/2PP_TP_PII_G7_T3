@@ -17,9 +17,13 @@ public class REDESOCIAL {
     public static void main(String[] args) {
         int opcao;
         
+        // Carregar utilizadores do ficheiro ao iniciar o programa
+        Menu.utilizadores = GestorUtilizadores.carregarUtilizadores();
+
+        
         /* Testar o procurar por email*/
         
-            Utilizador u =
+        /*    Utilizador u =
             GestorUtilizadores.procurarPorEmail("anildo@gmail.com");
 
                 if(u != null){
@@ -29,6 +33,7 @@ public class REDESOCIAL {
                 else{
                     System.out.println("Utilizador não encontrado");
                 }
+        */
         /*Testar o carregar utilizadores
                 ArrayList<Utilizador> lista =
                 GestorUtilizadores.carregarUtilizadores();

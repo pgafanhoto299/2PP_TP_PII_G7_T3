@@ -15,6 +15,7 @@ public class Menu {
     
      static Scanner input = new Scanner(System.in);
     
+     // Menu Principal 
      public static void mostrarMenuPrincipal() {
 
         System.out.println("===== MENU PRINCIPAL =====");
@@ -45,6 +46,7 @@ public class Menu {
         }
     }
     
+    //Menu Rede Social
     public static void menuRedeSocial() {
         int opcao;
 
@@ -94,6 +96,7 @@ public class Menu {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
+    //Definições
     public static void definicoes() {
 
         System.out.println("===== DEFINIÇÕES =====");
@@ -119,7 +122,24 @@ public class Menu {
         }
     }
 
-    public static void perfil(){}
+    //Perfil
+    public static void perfil(){
+        if (utiActual == null) {
+            System.out.println("Ninguém iniciou sessão!");
+            return;
+        }
+        System.out.println("\n===== MEU PERFIL =====");
+        System.out.println("ID:               " + utiActual.getId());
+        System.out.println("Nome:             " + utiActual.getUsername());
+        System.out.println("Email:            " + utiActual.getEmail());
+        System.out.println("Data nascimento:  " + utiActual.getDataNasc());
+        System.out.println("Membro desde:     " + utiActual.getDataCriac());
+        System.out.println("Seguidores:       " + utiActual.getSeguidores().size());
+        System.out.println("Seguindo:         " + utiActual.getSeguindo().size());
+  
+    }
+    
+    //Mudar senha
     public static void mudarSenha() {
 
     if(utiActual == null){

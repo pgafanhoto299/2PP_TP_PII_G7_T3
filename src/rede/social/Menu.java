@@ -1,6 +1,7 @@
 
 package rede.social;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -171,6 +172,7 @@ public class Menu {
     public static void criarConta(ArrayList<Utilizador> utilizadores) {
         Scanner input = new Scanner(System.in);
         
+        
         //Senha
         String senha;
         //System.out.println("A senha tem que ter 12 caracteres");
@@ -202,8 +204,8 @@ public class Menu {
            id = utilizadores.getLast().getId() + 1;
         }
         
-        Utilizador u = new Utilizador(senha, username, email,id, dataNasc);
-        
+        Utilizador u = new Utilizador(senha, username, email,id, dataNasc, LocalDate.now());
+        GestorUtilizadores.guardarUtilizador(u);
         utilizadores.add(u);
         
         System.out.println("Conta criada com sucesso! Bem vindo a  GVO" + utilizadores.get(id-1).getUsername() + "\n O próximo passo é iniciar sessão!");

@@ -3,6 +3,8 @@ package rede.social;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Scanner;
+import static rede.social.Menu.utiActual;
 
 public class Utilizador { 
     private String senha, username, email, dataNasc;
@@ -112,4 +114,40 @@ public LocalDate getDataCriac() {
       System.out.println("senha invalida deve ter numeros letras e caractere  especiais");
     return false;
   }
+  
+  
+  
+  
+public static void procurarUser (){
+    Scanner ler=new Scanner (System.in);
+     int i;
+  String nome;
+    for( i=0;Menu.utilizadores.size()>i;i++){
+        System.out.println("Insira o userName a procurar");
+        nome=ler.nextLine();
+        if(Menu.utilizadores.get(i).getUsername().equals(nome)){
+          
+         
+            System.out.println("=====Usuario:======");
+           \\estado
+            System.out.println("Username:"          +Menu.utilizadores.get(i).getUsername());
+            System.out.println("Seguidores: "       + Menu.utilizadores.get(i).getSeguidores().size());
+            System.out.println("Seguindo: "         + Menu.utilizadores.get(i).getSeguindo().size());
+  
+            Menu. menuRedeSocial();
+             
+  
+             return ; /
+       
+        }
+ }
+          System.out.println("Username inexistente");
+           Menu. menuRedeSocial();
+            return ;
+
+
+}
+  
+  
+  
 }

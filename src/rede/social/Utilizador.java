@@ -12,7 +12,7 @@ public class Utilizador {
 
     
     
-      public Utilizador(String senha, String username, String email, int id, String dataNasc) {
+      public Utilizador(String senha, String username, String email, int id, String dataNasc, LocalDate dataCriac) {
         this.senha = senha;
         this.username = username;
         this.email = email;
@@ -21,6 +21,7 @@ public class Utilizador {
         this.seguindo = new ArrayList<>();
         this.dataNasc = dataNasc;
         this.dataCriac = LocalDate.now();
+        this.dataCriac = dataCriac;
     }
 
 public LocalDate getDataCriac() {

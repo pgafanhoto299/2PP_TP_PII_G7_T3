@@ -1,6 +1,7 @@
 
 package rede.social;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -14,6 +15,7 @@ public class Menu {
     
      static Scanner input = new Scanner(System.in);
     
+     // Menu Principal 
      public static void mostrarMenuPrincipal() {
 
         System.out.println("===== MENU PRINCIPAL =====");
@@ -21,6 +23,22 @@ public class Menu {
         System.out.println("2. Iniciar Sessão");
         System.out.println("3. Fechar programa");
 
+        System.out.println("Escolha uma opção: ");
+        int opcao = input.nextInt();
+        input.nextLine();
+        switch (opcao) {
+
+            case 1 -> criarConta(utilizadores);
+
+            case 2 -> iniciarSessao();
+
+            case 3 -> {
+                System.out.println("Programa encerrado.");
+                System.exit(0);
+            }
+
+            default -> System.out.println("Opção inválida!");
+        }
     }
      
     //Ler a opcao
@@ -30,59 +48,31 @@ public class Menu {
     input.nextLine(); // limpa o Enter
     return opcao;
 }
-    //Processar a opcao escolhida
-    public static void executarOpcaoMenuPrincipal(int opcao){
-        switch (opcao) {
-
-            case 1 -> criarConta(utilizadores);
-
-            case 2 -> iniciarSessao();
-
-            case 3 -> System.out.println("Programa encerrado.");
-
-            default -> System.out.println("Opção inválida!");
-        }
-    }
-    
+    //Menu Rede Social
     public static void menuRedeSocial() {
         int opcao;
-
-        do {
-            motrarMenuRedeSocial();
-            opcao = lerOpcao();
-
-            executarOpcaoMenuRedeSocial(opcao);
-
-        } while (opcao != 4);
-    }
-    
-    public static void motrarMenuRedeSocial() {
 
         System.out.println("===== MENU REDE SOCIAL =====");
         System.out.println("1. Página inicial");
         System.out.println("2. Chat");
         System.out.println("3. Definições");
         System.out.println("4. Terminar sessão");
-
-    }
-    
-    public static void executarOpcaoMenuRedeSocial(int opcao){
-        switch (opcao) {
-
-            case 1 -> paginaInicial();
-
-            case 2 -> chat();
-
-            case 3 -> definicoes();
-            
-            case 4 -> System.out.println("Terminando Sessão...");
-
-            default -> System.out.println("Opção inválida!");
-        }
-    }
-    
-    public static void terminarSessao(){
-        System.out.println("Terminando Sessão!"); 
+        opcao = lerOpcao();
+        
+        do {
+            switch (opcao) {
+                case 1 -> paginaInicial();
+                case 2 -> chat();
+                case 3 -> menuDefinicoes();
+                case 4 -> {
+                    utiActual = null;
+                    System.out.println("Sessão terminada.");
+                    mostrarMenuPrincipal();
+                    
+                }
+                default -> System.out.println("Opção inválida!");
+            }
+        } while (opcao != 4);
     }
     
     public static void paginaInicial() {
@@ -93,32 +83,43 @@ public class Menu {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
-    public static void definicoes() {
-
-        System.out.println("===== DEFINIÇÕES =====");
-        System.out.println("1. PERFIL");
-        System.out.println("2. MUDAR SENHA");
-        System.out.println("3. MUDAR EMAIL");
-        System.out.println("4. Terminar sessão");
-
+    public static void menuDefinicoes(){
+        int opcao;
+        do {
+            System.out.println("\n===== DEFINIÇÕES =====");
+            System.out.println("1. Ver perfil");
+            System.out.println("2. Mudar senha");
+            System.out.println("3. Mudar email");
+            System.out.println("4. Voltar");
+            opcao = lerOpcao();
+            switch (opcao) {
+                case 1 -> perfil();
+                case 2 -> mudarSenha();
+                case 3 -> mudarEmail();
+                case 4 -> menuRedeSocial();
+                default -> System.out.println("Opção inválida!");
+            }
+        } while (opcao != 4);
     }
     
-    public static void executarDefinicoes(int opcao){
-        switch (opcao) {
-
-            case 1 -> perfil();
-
-            case 2 -> mudarSenha();
-
-            case 3 -> mudarEmail();
-            
-            case 4 -> terminarSessao();
-
-            default -> System.out.println("Opção inválida!");
+    //Perfil
+    public static void perfil(){
+        if (utiActual == null) {
+            System.out.println("Ninguém iniciou sessão!");
+            return;
         }
+        System.out.println("\n===== MEU PERFIL =====");
+        System.out.println("ID:               " + utiActual.getId());
+        System.out.println("Nome:             " + utiActual.getUsername());
+        System.out.println("Email:            " + utiActual.getEmail());
+        System.out.println("Data nascimento:  " + utiActual.getDataNasc());
+        System.out.println("Membro desde:     " + utiActual.getDataCriac());
+        System.out.println("Seguidores:       " + utiActual.getSeguidores().size());
+        System.out.println("Seguindo:         " + utiActual.getSeguindo().size());
+  
     }
-
-    public static void perfil(){}
+    
+    //Mudar senha
     public static void mudarSenha() {
 
     if(utiActual == null){
@@ -144,7 +145,10 @@ public class Menu {
     }
 
     utiActual.setSenha(novaSenha);
-
+    
+    // Gravar alteração no ficheiro
+    GestorUtilizadores.reescreverFicheiro(utilizadores);;
+    
     System.out.println("Senha alterada com sucesso!");
 }
    public static void mudarEmail() {
@@ -164,12 +168,15 @@ public class Menu {
     }
 
     utiActual.setEmail(novoEmail);
-
+    // Gravar alteração no ficheiro
+    GestorUtilizadores.reescreverFicheiro(utilizadores);;
+    
     System.out.println("Email alterado com sucesso!");
 }
     
     public static void criarConta(ArrayList<Utilizador> utilizadores) {
         Scanner input = new Scanner(System.in);
+        
         
         //Senha
         String senha;
@@ -202,8 +209,8 @@ public class Menu {
            id = utilizadores.getLast().getId() + 1;
         }
         
-        Utilizador u = new Utilizador(senha, username, email,id, dataNasc);
-        
+        Utilizador u = new Utilizador(senha, username, email,id, dataNasc, LocalDate.now());
+        GestorUtilizadores.guardarUtilizador(u);
         utilizadores.add(u);
         
         System.out.println("Conta criada com sucesso! Bem vindo a  GVO" + utilizadores.get(id-1).getUsername() + "\n O próximo passo é iniciar sessão!");

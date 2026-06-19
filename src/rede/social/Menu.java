@@ -86,21 +86,19 @@ public class Menu {
     
         do{
         switch(op){
-            case 1 -> publicacao(); // funcao publicar !feita
-             case 2-> Utilizador.procurarUser();  // procurar por perfil e exibir   !feita
+            case 1 -> publicacao(); // funcao publicar !feita???
+             case 2-> Utilizador.procurarUser();  // procurar por perfil e exibir   !feita ; Bug, é necessário procurar 3x para mostrar resultado
              case 3-> chat(); //!feita
-             case 4->mostrarMenuPrincipal();
+             case 4-> menuRedeSocial();
              default -> System.out.println("Opção inválida!");
         }
         }while(op!=4);
-    }
-        
-
+    }// chat, ver feed, publicacao não implementada, 
     
-    
+      
     public static void chat() {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
+    } // Não implementado
 
     public static void menuDefinicoes(){
         int opcao;
@@ -136,7 +134,7 @@ public class Menu {
         System.out.println("Seguidores:       " + utiActual.getSeguidores().size());
         System.out.println("Seguindo:         " + utiActual.getSeguindo().size());
   
-    }
+    } //Feito
     
     //Mudar senha
     public static void mudarSenha() {
@@ -169,8 +167,9 @@ public class Menu {
     GestorUtilizadores.reescreverFicheiro(utilizadores);;
     
     System.out.println("Senha alterada com sucesso!");
-}
-   public static void mudarEmail() {
+} // Feita
+    //Mudar email
+    public static void mudarEmail() {
 
     if(utiActual == null){
         System.out.println("Ninguém iniciou  sessão !");
@@ -191,9 +190,9 @@ public class Menu {
     GestorUtilizadores.reescreverFicheiro(utilizadores);;
     
     System.out.println("Email alterado com sucesso!");
-}
+} // Feita
     
-    public static void criarConta(ArrayList<Utilizador> utilizadores) {
+    public static void criarConta(ArrayList<Utilizador> utilizadores) { // Feita
         Scanner input = new Scanner(System.in);
         
         
@@ -232,8 +231,9 @@ public class Menu {
             GestorUtilizadores.guardarUtilizador(u);
             utilizadores.add(u);
         
-            System.out.println("Conta criada com sucesso! Bem vindo a  GVO" + utilizadores.get(id-1).getUsername() + "\n O próximo passo é iniciar sessão!");
-        
+            System.out.println("Conta criada com sucesso! Bem vindo ao Tech Leeks " + utilizadores.get(id-1).getUsername() + "\n O próximo passo é iniciar sessão!");
+            System.out.println("");
+            iniciarSessao();
         
     }
     

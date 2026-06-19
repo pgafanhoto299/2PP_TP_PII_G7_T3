@@ -129,7 +129,7 @@ public static void procurarUser (){
           
          
             System.out.println("=====Usuario:======");
-           \\estado
+           //estado
             System.out.println("Username:"          +Menu.utilizadores.get(i).getUsername());
             System.out.println("Seguidores: "       + Menu.utilizadores.get(i).getSeguidores().size());
             System.out.println("Seguindo: "         + Menu.utilizadores.get(i).getSeguindo().size());
@@ -137,7 +137,7 @@ public static void procurarUser (){
             Menu. menuRedeSocial();
              
   
-             return ; /
+             return ;
        
         }
  }

@@ -328,7 +328,7 @@ public class Menu {
                id = utilizadores.getLast().getId() + 1;
         }
         
-            Utilizador u = new Utilizador(senha, username, email,id, dataNasc, LocalDate.now());
+            Utilizador u = new Utilizador(senha, username,  email,id, dataNasc, LocalDate.now());
             GestorUtilizadores.guardarUtilizador(u);
             utilizadores.add(u);
         

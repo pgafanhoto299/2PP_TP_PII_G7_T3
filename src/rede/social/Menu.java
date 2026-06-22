@@ -314,7 +314,7 @@ public class Menu {
         //Senha
         String senha;
         //System.out.println("A senha tem que ter 12 caracteres");
-        System.out.println("Insira a sua senha: ");
+        System.out.println("Insira a sua senha: ");GestorUtilizadores.carregarUtilizadores();
         while(!Utilizador.verificar_senha(senha = input.nextLine())){
             System.out.println("Insira um senha válido:");
         }
@@ -335,6 +335,7 @@ public class Menu {
                 String dataNasc = input.nextLine(); //FUncao Verificar data
         
         //Definir o ID baseado no ID do ultimo usuario cadastrado
+        utilizadores = GestorUtilizadores.carregarUtilizadores();
         int id = 0;
         if(utilizadores.isEmpty()){
                id = 1;

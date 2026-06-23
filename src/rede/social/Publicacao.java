@@ -46,7 +46,7 @@ public class Publicacao {
             
              ArrayList<Publicacao> publicacoes = new ArrayList<>();
         
-             System.out.println("Digite o nome do usuario do dono da publicação:");
+             System.out.println("Digite o nome do usuario dono da publicação:");
              String nomeRemetente=Menu.input.nextLine(); // remetente a ser procurado
              publicacoes = GestorPublicacao.procurarPubliC(nomeRemetente); //chama o procurar publicao que retorna uma lista de publicacoes desse remetente
               

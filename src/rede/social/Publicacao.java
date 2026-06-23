@@ -60,8 +60,9 @@ public class Publicacao {
               
                  if(publicacoes.isEmpty()){
                      System.out.println("Publicações do(a) utilizador(a) " +nomeRemetente+ " não enconttrada"); 
-                     System.out.println("Tente denovo...");
-                     return;
+                     System.out.println("Tente denovo");
+                    
+                    Menu.publicacao();
              
                  }else{
                      System.out.println("\n============================================");
@@ -98,31 +99,47 @@ public class Publicacao {
                Minhaspublicacoes = GestorPublicacao. procurarMinhasPubliC(Menu.utiActual.getUsername());  //procurar publicaoes do utilizador logado no momento
               
                  if(Minhaspublicacoes.isEmpty()){
-                     System.out.println("Não tem nehuma publicacao" +Menu.utiActual.getUsername()); 
-                     return;
+                     System.out.println("Não tem nehuma publicacao "+Menu.utiActual.getUsername()); 
+                       Menu.publicacao();  
              
                  }else{
-                         System.out.println("==========================================");
+                         System.out.println("\n==========================================");
                         System.out.println("Todas suas publicacoes " +Menu.utiActual.getUsername()+ ":");
                          int i=1;
                          for(Publicacao j:Minhaspublicacoes){
-                        System.out.println(i+"."+j.getConteudo()); // exibe todas publicacoes do proprio usuario
-                        i++;
-                     }
-
-                     System.out.println("\n");
-                 }
-        
-                 Menu.publicacao();  // chamar reagir talvez
-            }
-          
+                          System.out.println(i+"."+j.getConteudo()); // exibe todas publicacoes do proprio usuario
+                          i++;
+                        }
+                           
+                      
+              
+               }
+                     //   Menu.publicacao;
          }
-
-
-
-    public void setDataEnvio(LocalDateTime dataEnvio) {
-        this.dataEnvio = dataEnvio;
+          
+            
+            public static void eliminarPubli(){ // funcao eliminar chama o metodo  deletar no gestor para apgar uma publicacao com base na posicao do array
+                
+                exibirMinhasPublicaoes();
+                System.out.println("Que publicacao quer eliminar?");
+                int i=Menu.input.nextInt();
+                ArrayList<Publicacao> NovasPublicacoes =GestorPublicacao.deletarPubli(i);
+                
+                GestorPublicacao.reescreverPublic(NovasPublicacoes);
+                
+                
+                 exibirMinhasPublicaoes();
+               
+                
+            }
+         
     }
+
+
+
+
+
+  
     
     
-}
+

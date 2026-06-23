@@ -63,7 +63,7 @@ public class GestorPublicacao {
     
         public static void reescreverPublic(ArrayList<Publicacao> P){
         
-             try(BufferedWriter pw =new BufferedWriter(new FileWriter("Publicaçao.txt"))){
+             try(BufferedWriter pw =new BufferedWriter(new FileWriter("Publicacao.txt"))){
             
                  for(Publicacao i:P){
                     
@@ -119,16 +119,30 @@ public class GestorPublicacao {
                  ArrayList<Publicacao> publicMinhas = new ArrayList<>(); // Array para guardar as publicacoes encontradas dele mesmo, miinhas publicaoes
                  
                 for( Publicacao i : todaspublicacoess){
-                            
+                          if(i.getRemetente().equalsIgnoreCase(remetente))
                           publicMinhas.add(i);
-                  }
+                }
              
             
-                  return publicMinhas;// retorna as publicaoes do proprio 
+                  return publicMinhas;// retorna as publicaoes do proprio usuario
               
-           } 
+          }
+         
+            public static ArrayList<Publicacao> deletarPubli(int i){ // deletar publicacao com base na sua posicao no arrayList
+                ArrayList<Publicacao> todasPublicacoes=Carregar_publicacao();
+                ArrayList<Publicacao> todasMinhasPublicNovas = procurarMinhasPubliC(Menu.utiActual.getUsername()); 
+               if(i>=todasMinhasPublicNovas.size()+1){
+                   System.out.println("Publicacao não encontrada");
+                   return todasPublicacoes;
+               }
+                todasMinhasPublicNovas.remove(i-1);
+                System.out.println("Publicação eliminada com sucesso!");
+                return todasMinhasPublicNovas;
+                   
+           
+                }
  
-}
+        }
      
 
 
@@ -138,4 +152,4 @@ public class GestorPublicacao {
 
 
 
-   
+

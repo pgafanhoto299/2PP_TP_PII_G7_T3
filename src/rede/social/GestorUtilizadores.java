@@ -52,9 +52,9 @@ public class GestorUtilizadores {
 
         while((linha = br.readLine()) != null){
 
-              if(linha.trim().isEmpty()){
+              /*if(linha.trim().isEmpty()){
                   continue;
-              }
+              }*/
 
             
             String[] dados = linha.split(";");
@@ -73,6 +73,7 @@ public class GestorUtilizadores {
 
     }catch(IOException e){
         System.out.println("Nenhum utilizador encontrado.");
+   
     }
 
     return lista;
@@ -114,6 +115,7 @@ public class GestorUtilizadores {
     for(Utilizador u : lista){
 
         if(u.getEmail().equals(email)){
+            
             return u;
         }
 
@@ -122,8 +124,19 @@ public class GestorUtilizadores {
     return null;
 }
     
-   
+         public static Utilizador procurarUser(String nome){
     
+            ArrayList<Utilizador> lista = carregarUtilizadores();
+
+                 for(Utilizador u : lista){
+
+                         if(u.getUsername().equals(nome)){
+                         return u;
+                      
+                         }
+                 }
+                return null;
+        }
+        
     
 }
-

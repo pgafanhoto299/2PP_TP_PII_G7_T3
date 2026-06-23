@@ -99,7 +99,7 @@ public LocalDate getDataCriac() {
     }
     public static boolean verificar_senha(String senha_ver){
         if(senha_ver.length()<=4){
-            System.out.println("Senha deve ter 4 caracteres");    
+            System.out.println("Senha deve ter pelo menos 5 caracteres");    
             return false;      
         }
          if(senha_ver.matches(".*[0-9].*" ) && senha_ver.matches(".*[a-z].*") && senha_ver.matches(".*[^a-zA-Z0-9 ].*")){

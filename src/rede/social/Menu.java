@@ -205,10 +205,10 @@ public class Menu {
     public static void caixaDeEntrada() {
         ArrayList<Integer> remetentes = GestorMensagens.caixaDeEntrada(utiActual.getId());
         
-        if( remetentes.isEmpty()){
-            System.out.println("Caixa de entrada vazia.");
-        }
-        
+        if (remetentes.isEmpty()) {
+    System.out.println("Caixa de entrada vazia.");
+    return; // ← sem isto continua e imprime o cabeçalho na mesma
+}
         System.out.println("\n==== CAIXA DE ENTRADA ====");
         for(int idRem : remetentes) {
             for(Utilizador u : utilizadores){
@@ -366,6 +366,9 @@ public class Menu {
 
         System.out.println("Digite a sua senha: ");
         String senha = input.nextLine();
+        
+         utilizadores = GestorUtilizadores.carregarUtilizadores();
+         GestorSeguidores.carregarFollows(utilizadores);
         utilizadores = GestorUtilizadores.carregarUtilizadores();
     //verificar as credenciais
         //Loop para pesquisar as credenciais do usuario ao iniciar sessão
@@ -522,6 +525,7 @@ public static void deixarDeSeguir(){
     System.out.println("Utilizador não encontrado.");
 }
 
+    
 }
 
 

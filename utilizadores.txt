@@ -1,1 +1,2 @@
 1;orlando;or@g.com;orm12!;2026-01-02;2026-06-23
+2;veri;veri@gmail.com;veri12@;20 junho 2026;2026-06-24

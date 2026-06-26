@@ -13,7 +13,8 @@ public class REDESOCIAL {
         int opcao;
         
        // Carregar utilizadores do ficheiro ao iniciar o programa
-       
+        // Carregar relações de seguidores
+        GestorSeguidores.carregarFollows(Menu.utilizadores);
        
       GestorUtilizadores.carregarUtilizadores();
       Menu.mostrarMenuPrincipal();

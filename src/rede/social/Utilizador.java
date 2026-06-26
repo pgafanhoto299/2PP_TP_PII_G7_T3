@@ -129,6 +129,9 @@ public LocalDate getDataCriac() {
     
      //Adiciona aos seguidores dooutro utilizador
     utilizador.getSeguidores().add(this);
+    
+    // Guarda no ficheiro
+    GestorSeguidores.guardarFollow(this.id, utilizador.getId());
 
     System.out.println("Agora segue " + utilizador.getUsername());
 
@@ -149,6 +152,8 @@ public LocalDate getDataCriac() {
     //remove dos seguidores do outro utilizador
     utilizador.getSeguidores().remove(this);
 
+    // Remove do ficheiro
+    GestorSeguidores.removerFollow(this.id, utilizador.getId());
     System.out.println("Deixou de seguir " + utilizador.getUsername());
 
     return true;
@@ -185,7 +190,7 @@ public LocalDate getDataCriac() {
      //percorre para mostrar as pessoas que segue
       for(int i = 0; i < seguindo.size(); i++){
 
-        System.out.println(" " + seguindo.get(i).getUsername());
+        System.out.println(" vvvVVVV" + seguindo.get(i).getUsername());
 
     }
 }

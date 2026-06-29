@@ -1,66 +1,55 @@
-
 package rede.social;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
-import static rede.social.GestorUtilizadores.carregarUtilizadores;
-
-
 
 public class Menu {
-    
-    //serve para guardar todos os utilizdaores que estão logados no momento
-    public static Utilizador utiActual = null;
-     
-     public static ArrayList<Utilizador> utilizadores = new ArrayList<>(); // vamos ter que carregar todos os ficheiros a partir do menu
-     
-     static Scanner input = new Scanner(System.in);
-    
-     // Menu Principal 
-     public static void mostrarMenuPrincipal() {
 
-        System.out.println("===== MENU PRINCIPAL =====");
+    public static Utilizador           utiActual   = null;
+    public static ArrayList<Utilizador> utilizadores = new ArrayList<>();
+    public static Scanner              input        = new Scanner(System.in);
+
+    public static int lerOpcaoSegura() {
+        try {
+            int opcao = Integer.parseInt(input.nextLine().trim());
+            return opcao;
+        } catch (NumberFormatException e) {
+            return -1; // sinaliza entrada inválida
+        }
+    }
+
+    public static int lerOpcao() {
+        System.out.print("Escolha uma opção: ");
+        return lerOpcaoSegura();
+    }
+
+//Menu Principal
+    public static void mostrarMenuPrincipal() {
+        System.out.println("\n===== MENU PRINCIPAL =====");
         System.out.println("1. Criar conta");
-        System.out.println("2. Iniciar Sessão");
+        System.out.println("2. Iniciar sessão");
         System.out.println("3. Fechar programa");
-        //System.out.println("4. Seguidores");
 
-        System.out.println("Escolha uma opção: ");
-        int opcao = input.nextInt();
-        input.nextLine();
+        int opcao = lerOpcao();
         switch (opcao) {
-
-            case 1 -> criarConta(utilizadores);
-
+            case 1 -> criarConta();
             case 2 -> iniciarSessao();
-
             case 3 -> {
                 System.out.println("Programa encerrado.");
                 System.exit(0);
             }
-            
-            
-
-            default -> System.out.println("Opção inválida!");
+            default -> {
+                System.out.println("Opção inválida!");
+                mostrarMenuPrincipal(); // repete o menu
+            }
         }
     }
-     
-    //Ler a opcao
-   public static int lerOpcao(){
-    System.out.println("Escolha uma opção: ");
-    int opcao = input.nextInt();
-    input.nextLine(); // limpa o Enter
-    return opcao;
-}
-    //Menu Rede Social
+
     public static void menuRedeSocial() {
-
         int opcao;
-
-     do {
-
+        do {
             System.out.println("\n===== MENU REDE SOCIAL =====");
             System.out.println("1. Página inicial");
             System.out.println("2. Chat");
@@ -69,158 +58,193 @@ public class Menu {
             System.out.println("5. Terminar sessão");
 
             opcao = lerOpcao();
-
-        switch (opcao) {
-
-            case 1 -> paginaInicial();
-
-            case 2 -> chat();
-
-            case 3 -> menuDefinicoes();
-
-            case 4 -> menuSeguidores();
-
-            case 5 -> {
-                utiActual = null;
-                System.out.println("Sessão terminada.");
-                mostrarMenuPrincipal();
-
-             }
+            switch (opcao) {
+                case 1 -> paginaInicial();
+                case 2 -> chat();
+                case 3 -> menuDefinicoes();
+                case 4 -> menuSeguidores();
+                case 5 -> {
+                    utiActual = null;
+                    System.out.println("Sessão terminada.");
+                    mostrarMenuPrincipal();
+                }
                 default -> System.out.println("Opção inválida!");
-        }
-         
-    }while (opcao != 5);
-      }
-          
-               
-        
-    
-    public static void paginaInicial() {
-        
-        System.out.println("===== Página Inicial =====");
-        System.out.println("     1.Ver Feed  ");
-        System.out.println("     2.Procurar   ");
-        System.out.println("     3.chat       ");
-        System.out.println("     4.Voltar    ");
-     int op=lerOpcao();
-    
-        do{
-        switch(op){
-            case 1 -> publicacao(); // todas a funcoes feitas
-             case 2-> procuraruser();  // procurar por perfil e exibir   !feita ; Bug, é necessário procurar 3x para mostrar resultado
-             case 3-> chat(); //!feita
-             case 4-> menuRedeSocial();
-             default -> System.out.println("Opção inválida!");
-
-        }
-        }while(op!=4);
-  
-    
+            }
+        } while (opcao != 5);
     }
-        public static void chat() {
-          int opcao;
-            
-        do{
+
+    //Pagina inicial
+    public static void paginaInicial() {
+        int op;
+        do {
+            System.out.println("\n===== PÁGINA INICIAL =====");
+            System.out.println("1. Ver Feed (Publicações)");
+            System.out.println("2. Procurar utilizador");
+            System.out.println("3. Chat");
+            System.out.println("4. Voltar");
+
+            op = lerOpcao();
+            switch (op) {
+                case 1 -> publicacao();
+                case 2 -> procurarUser();
+                case 3 -> chat();
+                case 4 -> { /* volta ao loop superior */ }
+                default -> System.out.println("Opção inválida!");
+            }
+        } while (op != 4);
+    }
+
+    // Menu de Publicações
+    public static void publicacao() {
+        int opcao;
+        do {
+            System.out.println("\n===== MENU PUBLICAÇÕES =====");
+            System.out.println("1. Ver publicações de alguém");
+            System.out.println("2. Ver as minhas publicações");
+            System.out.println("3. Adicionar publicação");
+            System.out.println("4. Eliminar publicação");
+            System.out.println("5. Comentários");
+            System.out.println("6. Voltar");
+
+            opcao = lerOpcao();
+            switch (opcao) {
+                case 1 -> Publicacao.exibirPulicacoes();
+                case 2 -> Publicacao.exibirMinhasPublicaoes();
+                case 3 -> Publicacao.adicionarPubli(utiActual.getUsername());
+                case 4 -> Publicacao.eliminarPubli();
+                case 5 -> menuComentarios();
+                case 6 -> { /* volta */ }
+                default -> System.out.println("Opção inválida!");
+            }
+        } while (opcao != 6);
+    }
+
+    // Menu de Comentários
+
+    public static void menuComentarios() {
+        int opcao;
+        do {
+            System.out.println("\n===== MENU COMENTÁRIOS =====");
+            System.out.println("1. Eliminar um meu comentário");
+            System.out.println("2. Voltar");
+
+            opcao = lerOpcao();
+            switch (opcao) {
+                case 1 -> Comentario.eliminarComentario();
+                case 2 -> { /* volta */ }
+                default -> System.out.println("Opção inválida!");
+            }
+        } while (opcao != 2);
+    }
+
+    // Chat / Mensagens
+    public static void chat() {
+        int opcao;
+        do {
             System.out.println("\n===== CHAT =====");
             System.out.println("1. Enviar mensagem");
             System.out.println("2. Ver conversa");
             System.out.println("3. Caixa de entrada");
             System.out.println("4. Voltar");
+
             opcao = lerOpcao();
-            
-            switch(opcao) {
+            switch (opcao) {
                 case 1 -> enviarMensagem();
                 case 2 -> verConversa();
                 case 3 -> caixaDeEntrada();
-                case 4 -> {
-                    System.out.println("A voltar...");
-                    menuRedeSocial();
-                }
+                case 4 -> { /* volta */ }
                 default -> System.out.println("Opção inválida!");
             }
-        } while(opcao != 4);
-    } // Não implementado
+        } while (opcao != 4);
+    }
 
+    //EnViar mensagem
     public static void enviarMensagem() {
-        System.out.println("Nome do destinatário: ");
-        String nome = input.nextLine();
-        
+        System.out.print("Nome do destinatário: ");
+        String nome = input.nextLine().trim();
+
+        // Procurar
         Utilizador destinatario = null;
-        for( Utilizador u : utilizadores) {
-            if (u.getUsername().equalsIgnoreCase(nome)){
+        for (Utilizador u : utilizadores) {
+            if (u.getUsername().equalsIgnoreCase(nome)) {
                 destinatario = u;
                 break;
             }
         }
-        
+
         if (destinatario == null) {
-            System.out.println("utilizador não encontrado");
-            return ;
+            System.out.println("Utilizador não encontrado.");
+            return;
         }
-        
-        if (destinatario.getId() == utiActual.getId()){
+        if (destinatario.getId() == utiActual.getId()) {
             System.out.println("Não podes enviar mensagem a ti mesmo!");
-            return ;
+            return;
         }
-        
+
         System.out.print("Mensagem: ");
         String conteudo = input.nextLine();
-        
-        Mensagem m = new Mensagem(conteudo, utiActual.getId(), destinatario.getId(), LocalDateTime.now());
+
+        Mensagem m = new Mensagem(conteudo, utiActual.getId(),
+                                  destinatario.getId(), LocalDateTime.now());
         GestorMensagens.guardarMensagem(m);
         System.out.println("Mensagem enviada para " + destinatario.getUsername() + "!");
     }
-    
+
+    /** Mostra a conversa completa com outro utilizador */
     public static void verConversa() {
-        System.out.println("Nome do utilizador: ");
-        String nome = input.nextLine();
-        
+        System.out.print("Nome do utilizador: ");
+        String nome = input.nextLine().trim();
+
         Utilizador outro = null;
-        for(Utilizador u : utilizadores) {
-            if(u.getUsername().equalsIgnoreCase(nome)) {
+        for (Utilizador u : utilizadores) {
+            if (u.getUsername().equalsIgnoreCase(nome)) {
                 outro = u;
                 break;
             }
         }
-        
-        if (outro == null){
-            System.out.println("Utilizado não encontrado.");
-            return ;
+
+        if (outro == null) {
+            System.out.println("Utilizador não encontrado.");
+            return;
         }
-        
+
         ArrayList<Mensagem> conversa = GestorMensagens.verConversa(utiActual.getId(), outro.getId());
-        
-        if(conversa.isEmpty()) {
+
+        if (conversa.isEmpty()) {
             System.out.println("Sem mensagens com " + outro.getUsername() + ".");
-            return ;
+            return;
         }
-        
-        System.out.println("\n==== CONVERSA COM " + outro.getUsername().toUpperCase()+ " =====");
-        for(Mensagem m : conversa) {
-            String quem = m.getRemetente() == utiActual.getId() ? "Tu" : outro.getUsername();
-            System.out.println("[" + m.getDataEnvio().toLocalDate() +"]" + quem + ": " + m.getConteudo());
+
+        System.out.println("\n==== CONVERSA COM " + outro.getUsername().toUpperCase() + " ====");
+        for (Mensagem msg : conversa) {
+            String quem = (msg.getRemetente() == utiActual.getId()) ? "Tu" : outro.getUsername();
+            System.out.println("[" + msg.getDataEnvio().toLocalDate() + "] "
+                + quem + ": " + msg.getConteudo());
         }
     }
-    
+
+    /** Mostra a caixa de entrada (quem enviou mensagens ao utilizador atual) */
     public static void caixaDeEntrada() {
         ArrayList<Integer> remetentes = GestorMensagens.caixaDeEntrada(utiActual.getId());
-        
+
         if (remetentes.isEmpty()) {
-    System.out.println("Caixa de entrada vazia.");
-    return; // ← sem isto continua e imprime o cabeçalho na mesma
-}
+            System.out.println("Caixa de entrada vazia.");
+            return;
+        }
+
         System.out.println("\n==== CAIXA DE ENTRADA ====");
-        for(int idRem : remetentes) {
-            for(Utilizador u : utilizadores){
-                if(u.getId() == idRem) {
-                    System.out.println("- " + u.getUsername());
+        for (int idRem : remetentes) {
+            for (Utilizador u : utilizadores) {
+                if (u.getId() == idRem) {
+                    System.out.println("  - " + u.getUsername());
                     break;
                 }
             }
         }
-        
     }
-    public static void menuDefinicoes(){
+
+    // Definições
+    public static void menuDefinicoes() {
         int opcao;
         do {
             System.out.println("\n===== DEFINIÇÕES =====");
@@ -228,305 +252,223 @@ public class Menu {
             System.out.println("2. Mudar senha");
             System.out.println("3. Mudar email");
             System.out.println("4. Voltar");
+
             opcao = lerOpcao();
             switch (opcao) {
                 case 1 -> perfil();
                 case 2 -> mudarSenha();
                 case 3 -> mudarEmail();
-                case 4 -> menuRedeSocial();
+                case 4 -> { /* volta */ }
                 default -> System.out.println("Opção inválida!");
             }
         } while (opcao != 4);
     }
-    
-    //Perfil
-    public static void perfil(){
+
+    // Exibe o perfil do utilizador com sessão iniciada
+    public static void perfil() {
         if (utiActual == null) {
             System.out.println("Ninguém iniciou sessão!");
             return;
         }
         System.out.println("\n===== MEU PERFIL =====");
         System.out.println("ID:               " + utiActual.getId());
-        System.out.println("Nome:             " + utiActual.getUsername());
+        System.out.println("Username:         " + utiActual.getUsername());
         System.out.println("Email:            " + utiActual.getEmail());
         System.out.println("Data nascimento:  " + utiActual.getDataNasc());
         System.out.println("Membro desde:     " + utiActual.getDataCriac());
         System.out.println("Seguidores:       " + utiActual.getSeguidores().size());
         System.out.println("Seguindo:         " + utiActual.getSeguindo().size());
-  
-    } //Feito
-    
-    //Mudar senha
+    }
+
     public static void mudarSenha() {
+        if (utiActual == null) {
+            System.out.println("Ninguém iniciou sessão!");
+            return;
+        }
 
-    if(utiActual == null){
-        System.out.println("Ninguém iniciou sessão!");
-        return;
-    }
+        System.out.print("Senha atual: ");
+        String senhaAtual = input.nextLine();
 
-    System.out.print("Digite a senha atual: ");
-    String senhaActual = input.nextLine();
+        if (!utiActual.getSenha().equals(senhaAtual)) {
+            System.out.println("Senha nova incorreta!");
+            return;
+        }
 
-    if(!utiActual.getSenha().equals(senhaActual)){
-        System.out.println("Senha nova incorreta!");
-        return;
-    }
-
-    String novaSenha;
-
-    System.out.print("Digite a nova senha: ");
-
-    while(!Utilizador.verificar_senha(novaSenha = input.nextLine())){
-        System.out.println("Senha inválida!");
-        System.out.print("Digite novamente: ");
-    }
+        System.out.print("Nova senha: ");
+        String novaSenha = input.nextLine();
+        while (!Utilizador.verificar_senha(novaSenha)) {
+            System.out.print("Tente novamente: ");
+            novaSenha = input.nextLine();
+        }
 
         utiActual.setSenha(novaSenha);
-    
-    // Gravar alteração no ficheiro
-    GestorUtilizadores.reescreverFicheiro(utilizadores);;
-    
-    System.out.println("Senha alterada com sucesso!");
-} // Feita
-    //Mudar email
-    public static void mudarEmail() {
-
-    if(utiActual == null){
-        System.out.println("Ninguém iniciou  sessão !");
-        return;
+        GestorUtilizadores.reescreverFicheiro(utilizadores);
+        System.out.println("Senha alterada com sucesso!");
     }
 
-    String novoEmail;
-
-    System.out.print("Digite o novo email: ");
-
-    while(!Utilizador.verificar_email(novoEmail = input.nextLine())){
-        System.out.println("Email inválido!");
-        System.out.print("Digite novamente: ");
-    }
-
-    utiActual.setEmail(novoEmail);
-    // Gravar alteração no ficheiro
-    GestorUtilizadores.reescreverFicheiro(utilizadores);;
-    
-    System.out.println("Email alterado com sucesso!");
-} // Feita
-    
-    public static void criarConta(ArrayList<Utilizador> utilizadores) { // Feita
-        Scanner input = new Scanner(System.in);
-        
-        
-        //Senha
-        String senha;
-        //System.out.println("A senha tem que ter 12 caracteres");
-        System.out.println("Insira a sua senha: ");GestorUtilizadores.carregarUtilizadores();
-        while(!Utilizador.verificar_senha(senha = input.nextLine())){
-            System.out.println("Insira um senha válido:");
+        public static void mudarEmail() {
+        if (utiActual == null) {
+            System.out.println("Ninguém iniciou sessão!");
+            return;
         }
-        
-        
-        //Nome
-            System.out.println("Insira o seu nome: ");
-        String username = input.nextLine();// FUncao verificar nome
-        
-        
-        //Email
-            String email;
-            System.out.println("Insira o seu email: ");
-            while(!Utilizador.verificar_email(email = input.nextLine())){
-            System.out.println("Insira um email válido:");
-            }
-                System.out.println("Insira a sua data de nascimento: ");
-                String dataNasc = input.nextLine(); //FUncao Verificar data
-        
-        //Definir o ID baseado no ID do ultimo usuario cadastrado
-        utilizadores = GestorUtilizadores.carregarUtilizadores();
-        int id = 0;
-        if(utilizadores.isEmpty()){
-               id = 1;
-        }else{
-               id = utilizadores.getLast().getId() + 1;
+
+        System.out.print("Novo email: ");
+        String novoEmail = input.nextLine();
+        while (!Utilizador.verificar_email(novoEmail)) {
+            System.out.println("Email inválido!");
+            System.out.print("Tente novamente: ");
+            novoEmail = input.nextLine();
         }
-        
-            Utilizador u = new Utilizador(senha, username, email,id, dataNasc, LocalDate.now());
-            GestorUtilizadores.guardarUtilizador(u);
-            utilizadores.add(u);
-        
-            System.out.println("Conta criada com sucesso! Bem vindo ao Tech Leeks " + utilizadores.get(id-1).getUsername() + "\n O próximo passo é iniciar sessão!");
-            System.out.println("");
-            iniciarSessao();
-        
+
+        utiActual.setEmail(novoEmail);
+        GestorUtilizadores.reescreverFicheiro(utilizadores);
+        System.out.println("Email alte1rado com sucesso!");
     }
-    
-    
-    public static void iniciarSessao(){
 
-        System.out.println("Digite o seu email: ");
-        String email = input.nextLine();
+    // Criar conta
+    public static void criarConta() {
+        System.out.println("\n--- Criar conta ---");
 
-        System.out.println("Digite a sua senha: ");
+        // Senha
+        System.out.print("Senha: ");
         String senha = input.nextLine();
-        
-         utilizadores = GestorUtilizadores.carregarUtilizadores();
-         GestorSeguidores.carregarFollows(utilizadores);
+        while (!Utilizador.verificar_senha(senha)) {
+            System.out.print("Tente novamente: ");
+            senha = input.nextLine();
+        }
+
+        // Username
+        System.out.print("Username: ");
+        String username = input.nextLine().trim();
+
+        // Email
+        System.out.print("Email: ");
+        String email = input.nextLine();
+        while (!Utilizador.verificar_email(email)) {
+            System.out.println("Email inválido!");
+            System.out.print("Tente novamente: ");
+            email = input.nextLine();
+        }
+
+        // Data de nascimento
+        System.out.print("Data de nascimento (ex: 2000-05-15): ");
+        String dataNasc = input.nextLine();
+
+        // Definir ID com base no último utilizador registado
         utilizadores = GestorUtilizadores.carregarUtilizadores();
-    //verificar as credenciais
-        //Loop para pesquisar as credenciais do usuario ao iniciar sessão
+        int id = utilizadores.isEmpty() ? 1 : utilizadores.getLast().getId() + 1;
 
-    for(int i = 0; i < utilizadores.size(); i++){
+        Utilizador novo = new Utilizador(senha, username, email, id, dataNasc, LocalDate.now());
+        GestorUtilizadores.guardarUtilizador(novo);
+        utilizadores.add(novo);
 
-        if(utilizadores.get(i).getEmail().equalsIgnoreCase(email)){
+        System.out.println("Conta criada com sucesso! Bem-vindo(a) ao Tech Leeks, " + username + "!");
+        System.out.println("Agora inicia sessão...\n");
+        iniciarSessao();
+    }
+    
+    // Iniciar sessão
+    public static void iniciarSessao() {
+        System.out.print("Email: ");
+        String email = input.nextLine().trim();
 
-            if(utilizadores.get(i).getSenha().equals(senha)){
+        System.out.print("Senha: ");
+        String senha = input.nextLine();
 
-                utiActual = utilizadores.get(i);
+        // Carrega utilizadores, depois aplica os follows na mesma lista
+        utilizadores = GestorUtilizadores.carregarUtilizadores();
+        GestorSeguidores.carregarFollows(utilizadores); // associa seguidores na lista já carregada
 
-                System.out.println("Sessão iniciada com sucesso!");
+        for (Utilizador u : utilizadores) {
+            if (u.getEmail().equalsIgnoreCase(email)) {
+                if (u.getSenha().equals(senha)) {
+                    utiActual = u;
+                    System.out.println("Sessão iniciada com sucesso! Olá, " + u.getUsername() + "!");
+                    menuRedeSocial();
+                    return;
+                } else {
+                    System.out.println("Senha incorreta!");
+                    return;
+                }
+            }
+        }
 
-                menuRedeSocial();
-                return;
+        System.out.println("Utilizador não encontrado. Por favor, crie uma conta.");
+        mostrarMenuPrincipal();
+    }
 
-            }else{
+    // Seguidores
+    public static void menuSeguidores() {
+        if (utiActual == null) {
+            System.out.println("Ninguém iniciou sessão.");
+            return;
+        }
 
-                System.out.println("Senha incorreta!");
+        int opcao;
+        do {
+            System.out.println("\n===== MENU SEGUIDORES =====");
+            System.out.println("1. Ver os meus seguidores");
+            System.out.println("2. Ver quem estou a seguir");
+            System.out.println("3. Seguir utilizador");
+            System.out.println("4. Deixar de seguir");
+            System.out.println("5. Voltar");
+
+            opcao = lerOpcao();
+            switch (opcao) {
+                case 1 -> utiActual.showfollow();
+                case 2 -> utiActual.showfollowing();
+                case 3 -> seguir();
+                case 4 -> deixarDeSeguir();
+                case 5 -> { /* volta */ }
+                default -> System.out.println("Opção inválida!");
+            }
+        } while (opcao != 5);
+    }
+
+    // Segue outro utilizador pelo username
+    public static void seguir() {
+        System.out.print("Username de quem deseja seguir: ");
+        String nome = input.nextLine().trim();
+
+        for (Utilizador u : utilizadores) {
+            if (u.getUsername().equalsIgnoreCase(nome)) {
+                utiActual.follow(u);
+                GestorUtilizadores.reescreverFicheiro(utilizadores);
                 return;
             }
         }
+        System.out.println("Utilizador não encontrado.");
     }
 
-             System.out.println("Usuário inexistente!");
-             System.out.println("Por favor, crie uma conta.");
-             mostrarMenuPrincipal();
-}
+    // Deixa de seguir outro utilizador pelo username
+    public static void deixarDeSeguir() {
+        System.out.print("Username de quem quer deixar de seguir: ");
+        String nome = input.nextLine().trim();
+
+        for (Utilizador u : utilizadores) {
+            if (u.getUsername().equalsIgnoreCase(nome)) {
+                utiActual.unfollow(u);
+                GestorUtilizadores.reescreverFicheiro(utilizadores);
+                return;
+            }
+        }
+        System.out.println("Utilizador não encontrado.");
+    }
     
-    //Menu Redes Sociais Opcoes
- 
-     public static void procuraruser(){
-      
-     }
- 
+    //Procurar utilizador
+    public static void procurarUser() {
+        System.out.print("Username a procurar: ");
+        String nome = input.nextLine().trim();
 
-          public static void publicacao(){
-               
-                 int opcao;
-                 
-                 
-              do{
-                 System.out.println("\n======Menu Publicações======");
-                 System.out.println("1.Ver publicações de alguém");
-                 System.out.println("2.Ver minhas publicacoes");
-                 System.out.println("3.Adicionar Publicação");
-                 System.out.println("4.Eliminar publicação");
-                 System.out.println("5.voltar");
-                  opcao = lerOpcao();
-                
-                 switch(opcao){
-                     case 1->Publicacao.exibirPulicacoes();
-                     case 2->Publicacao.exibirMinhasPublicaoes();
-                     case 3->Publicacao.adicionarPubli(utiActual.getUsername());
-                     case 4-> Publicacao.eliminarPubli();
-                     case 5-> paginaInicial();
-                     default->System.out.println("opção invalida");
-                 }
-             
-              }while(opcao!=5);
-         
-          }
-            
-            
-public static void menuSeguidores(){
-
-    if(utiActual == null){
-        System.out.println("Ninguém iniciou sessão");
-        return;
-    }
-
-    int opcao;
-
-    do{
-
-        System.out.println("\n ===== MENU SEGUIDORES =====");
-        System.out.println("1. Mostrar seguidores");
-        System.out.println("2. Mostrar seguindo");
-        System.out.println("3. Seguir");
-        System.out.println("4. Deixar de seguir");
-        System.out.println("5. Voltar");
-
-        opcao = lerOpcao();
-
-        switch(opcao){
-
-            case 1:
-                //O utilizador que está logado mostra quem está a seguir.
-                utiActual.showfollow();
-                break;
-
-            case 2:
-                 //O utilizador que está logado mostra quem está  seguindo.
-                utiActual.showfollowing();
-                break;
-
-            case 3:
-              
-             seguir();
-               break; 
-             
-
-            case 4:
-                deixarDeSeguir();
-                break;
-
-            case 5:
-                System.out.println(" voltar");
-                break;
-
-            default:
-                System.out.println("Opção inválida!");
+        for (Utilizador u : utilizadores) {
+            if (u.getUsername().equalsIgnoreCase(nome)) {
+                System.out.println("\n===== PERFIL DE " + u.getUsername().toUpperCase() + " =====");
+                System.out.println("Username:    " + u.getUsername());
+                System.out.println("Seguidores:  " + u.getSeguidores().size());
+                System.out.println("Seguindo:    " + u.getSeguindo().size());
+                return;
+            }
         }
-
-    }while(opcao != 5);
-}// feito
-    public static void seguir(){
-
-    System.out.print("Digite o nome de quem desejas seguir: ");
-    String nome = input.nextLine();
-
-    for(Utilizador u : utilizadores){
-
-        if(u.getUsername().equalsIgnoreCase(nome)){
-
-            utiActual.follow(u);
-
-            GestorUtilizadores.reescreverFicheiro(utilizadores);
-
-            return;
-        }
+        System.out.println("Utilizador \"" + nome + "\" não encontrado.");
     }
-
-    System.out.println("Utilizador não encontrado.");
-}  //feito
-public static void deixarDeSeguir(){
-
-    System.out.print("Digite o nome de quem queres deixar de seguir: ");
-    String nome = input.nextLine();
-
-    for(Utilizador u : utilizadores){
-
-        if(u.getUsername().equalsIgnoreCase(nome)){
-
-            utiActual.unfollow(u);
-
-            GestorUtilizadores.reescreverFicheiro(utilizadores);
-
-            return;
-        }
-    }
-
-    System.out.println("Utilizador não encontrado.");
 }
-
-    
-}
-
-
-

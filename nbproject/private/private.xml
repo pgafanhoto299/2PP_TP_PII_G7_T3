@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/orlan/OneDrive/Documentos/NetBeansProjects/2PP_TP_PII_G7_T3/src/rede/social/Menu.java</file>
-            <file>file:/C:/Users/orlan/OneDrive/Documentos/NetBeansProjects/2PP_TP_PII_G7_T3/src/rede/social/REDESOCIAL.java</file>
-            <file>file:/C:/Users/orlan/OneDrive/Documentos/NetBeansProjects/2PP_TP_PII_G7_T3/src/rede/social/GestorUtilizadores.java</file>
-            <file>file:/C:/Users/orlan/OneDrive/Documentos/NetBeansProjects/2PP_TP_PII_G7_T3/src/rede/social/Utilizador.java</file>
+            <file>file:/home/guga/NetBeansProjects/exame/2PP_TP_PII_G7_T3/src/rede/social/GestorUtilizadores.java</file>
+            <file>file:/home/guga/NetBeansProjects/exame/2PP_TP_PII_G7_T3/src/rede/social/REDESOCIAL.java</file>
+            <file>file:/home/guga/NetBeansProjects/exame/2PP_TP_PII_G7_T3/src/rede/social/Menu.java</file>
+            <file>file:/home/guga/NetBeansProjects/exame/2PP_TP_PII_G7_T3/src/rede/social/Publicacao.java</file>
+            <file>file:/home/guga/NetBeansProjects/exame/2PP_TP_PII_G7_T3/src/rede/social/GestorPublicacao.java</file>
+            <file>file:/home/guga/NetBeansProjects/exame/2PP_TP_PII_G7_T3/src/rede/social/GestorSeguidores.java</file>
+            <file>file:/home/guga/NetBeansProjects/exame/2PP_TP_PII_G7_T3/src/rede/social/Utilizador.java</file>
         </group>
     </open-files>
 </project-private>

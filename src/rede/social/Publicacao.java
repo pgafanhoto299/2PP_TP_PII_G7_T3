@@ -1,138 +1,108 @@
-
 package rede.social;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
-
 public class Publicacao {
-    private String remetenteID;
-    private String conteudo;
+
+
+    private String        remetenteID; // username do autor
+    private String        conteudo;
     private LocalDateTime dataEnvio;
 
-    public String getRemetente() {
-        return remetenteID;
-    }
-
-    public String getConteudo() {
-        return conteudo;
-    }
-
-    public LocalDateTime getDataEnvio() {
-        return dataEnvio;
-    }
-
-    public void setRemetente(String remetenteID) {
+    public Publicacao(String remetenteID, String conteudo, LocalDateTime dataEnvio) {
         this.remetenteID = remetenteID;
+        this.conteudo    = conteudo;
+        this.dataEnvio   = dataEnvio;
     }
 
-    public void setConteudo(String conteudo) {
-        this.conteudo = conteudo;
+    public String        getRemetente() { return remetenteID; }
+    public String        getConteudo()  { return conteudo;    }
+    public LocalDateTime getDataEnvio() { return dataEnvio;   }
+
+    public void setRemetente(String remetenteID)    { this.remetenteID = remetenteID; }
+    public void setConteudo(String conteudo)        { this.conteudo    = conteudo;    }
+    public void setDataEnvio(LocalDateTime dataEnvio) { this.dataEnvio = dataEnvio;  }
+
+    public static void exibirPulicacoes() {
+        System.out.print("Digite o nome do utilizador: ");
+        String nomeRemetente = Menu.input.nextLine().trim();
+
+        // Se o nome coincide com o utilizador logado, redireciona para "minhas publicações"
+        if (nomeRemetente.equalsIgnoreCase(Menu.utiActual.getUsername())) {
+            System.out.println("Esse é o seu utilizador. A mostrar as suas publicações...");
+            exibirMinhasPublicaoes();
+            return;
+        }
+
+        ArrayList<Publicacao> publicacoes = GestorPublicacao.procurarPubliC(nomeRemetente);
+
+        if (publicacoes.isEmpty()) {
+            System.out.println("Nenhuma publicação encontrada para \"" + nomeRemetente + "\".");
+            return;
+        }
+
+        System.out.println("\n============================================");
+        System.out.println("Publicações de " + nomeRemetente + ":");
+        int i = 1;
+        for (Publicacao p : publicacoes) {
+            System.out.println(i + ". " + p.getConteudo()
+                + "  [" + p.getDataEnvio().toLocalDate() + "]");
+            i++;
+        }
+
+        // Opção de ver comentários de uma publicação específica
+        System.out.println("\nDeseja ver os comentários de alguma publicação? (0 para não)");
+        int escolha = Menu.lerOpcaoSegura();
+        if (escolha >= 1 && escolha <= publicacoes.size()) {
+            Comentario.exibirComentarios(publicacoes.get(escolha - 1));
+        }
     }
 
-    public void setDataEnvio(LocalDateTime dataEnvio) {
-        this.dataEnvio = dataEnvio;
-    }
-    public Publicacao(String remetenteID,String conteudo,LocalDateTime dataEnvio){
-              this.conteudo=conteudo;
-              this.remetenteID=remetenteID;
-              this.dataEnvio=dataEnvio;
-               
+    public static void exibirMinhasPublicaoes() {
+        ArrayList<Publicacao> minhas =
+            GestorPublicacao.procurarMinhasPubliC(Menu.utiActual.getUsername());
 
+        if (minhas.isEmpty()) {
+            System.out.println("Não tem nenhuma publicação, " + Menu.utiActual.getUsername() + ".");
+            return;
+        }
+
+        System.out.println("\n==========================================");
+        System.out.println("As suas publicações (" + Menu.utiActual.getUsername() + "):");
+        int i = 1;
+        for (Publicacao p : minhas) {
+            System.out.println(i + ". " + p.getConteudo()
+                + "  [" + p.getDataEnvio().toLocalDate() + "]");
+            i++;
+        }
+    }
+
+    public static void adicionarPubli(String nomeAutor) {
+        System.out.println("--- Nova publicação ---");
+        System.out.print("Escreva o texto: ");
+        String conteudo  = Menu.input.nextLine();
+        LocalDateTime agora = LocalDateTime.now();
+
+        // Construtor: (remetenteID, conteudo, dataEnvio)
+        Publicacao nova = new Publicacao(nomeAutor, conteudo, agora);
+        GestorPublicacao.guardar_publicacao(nova);
+        System.out.println("Publicação adicionada com sucesso!");
+    }
+
+    public static void eliminarPubli() {
+        exibirMinhasPublicaoes();
+
+        ArrayList<Publicacao> minhas =
+            GestorPublicacao.procurarMinhasPubliC(Menu.utiActual.getUsername());
+
+        if (minhas.isEmpty()) return; // exibirMinhasPublicaoes já mostrou mensagem
+
+        System.out.print("Qual publicação quer eliminar? ");
+        int pos = Menu.lerOpcaoSegura();
+
+        ArrayList<Publicacao> atualizadas = GestorPublicacao.deletarPubli(pos);
+        GestorPublicacao.reescreverPublic(atualizadas);
+        System.out.println("Publicação eliminada com sucesso!");
+        exibirMinhasPublicaoes();
+    }
 }
-
-       public static void exibirPulicacoes (){         
-            
-             ArrayList<Publicacao> publicacoes = new ArrayList<>();
-        
-             System.out.println("Digite o nome do usuario dono da publicação:");
-             String nomeRemetente=Menu.input.nextLine(); // remetente a ser procurado
-             publicacoes = GestorPublicacao.procurarPubliC(nomeRemetente); //chama o procurar publicao que retorna uma lista de publicacoes desse remetente
-              
-                 if(publicacoes.isEmpty()){
-                     System.out.println("Publicações do(a) utilizador(a) " +nomeRemetente+ " não enconttrada"); 
-                     System.out.println("Tente denovo");
-                    
-                    Menu.publicacao();
-             
-                 }else{
-                     System.out.println("\n============================================");
-                     System.out.println("Todas publicacoes do(a) " +nomeRemetente+ ":");
-                     int i=1;
-                     for(Publicacao j:publicacoes){
-                     System.out.println(i+"."+j.getConteudo()+". publicado em: "+j.getDataEnvio()); // exibe todas publicacoes do remetente desejado
-                     i++;
-                     }
-
-                  
-                 }
-        
-                 Menu.publicacao(); // chamar reagir nao o publicacao talvez
-       }
-        
-      public static void adicionarPubli(String nome){
-           
-           System.out.println("Adicionar publicacao");
-           System.out.println("Insira o texto a Publicar");
-           
-           String content =Menu.input.nextLine();
-           LocalDateTime dataEnvio=LocalDateTime.now();
-           
-          
-           Publicacao novaPublicacao= new Publicacao(content,nome,dataEnvio);
-           GestorPublicacao.guardar_publicacao(novaPublicacao);
-           Menu.publicacao();
-           
-     
-      }
-            public static void exibirMinhasPublicaoes(){
-                      ArrayList<Publicacao> Minhaspublicacoes = new ArrayList<>();
-               Minhaspublicacoes = GestorPublicacao. procurarMinhasPubliC(Menu.utiActual.getUsername());  //procurar publicaoes do utilizador logado no momento
-              
-                 if(Minhaspublicacoes.isEmpty()){
-                     System.out.println("Não tem nehuma publicacao "+Menu.utiActual.getUsername()); 
-                       Menu.publicacao();  
-             
-                 }else{
-                         System.out.println("\n==========================================");
-                        System.out.println("Todas suas publicacoes " +Menu.utiActual.getUsername()+ ":");
-                         int i=1;
-                         for(Publicacao j:Minhaspublicacoes){
-                          System.out.println(i+"."+j.getConteudo()); // exibe todas publicacoes do proprio usuario
-                          i++;
-                        }
-                           
-                      
-              
-               }
-                     //   Menu.publicacao;
-         }
-          
-            
-            public static void eliminarPubli(){ // funcao eliminar chama o metodo  deletar no gestor para apgar uma publicacao com base na posicao do array
-                
-                exibirMinhasPublicaoes();
-                System.out.println("Que publicacao quer eliminar?");
-                int i=Menu.input.nextInt();
-                ArrayList<Publicacao> NovasPublicacoes =GestorPublicacao.deletarPubli(i);
-                
-                GestorPublicacao.reescreverPublic(NovasPublicacoes);
-                
-                
-                 exibirMinhasPublicaoes();
-               
-                
-            }
-         
-    }
-
-
-
-
-
-  
-    
-
-    
-

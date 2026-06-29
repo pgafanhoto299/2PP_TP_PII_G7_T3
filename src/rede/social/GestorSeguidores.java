@@ -1,86 +1,71 @@
-
-
 package rede.social;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 
 public class GestorSeguidores {
-        
-    // Cada linha do ficheiro guarda uma relação idSeguidor e idSeguido
-    public static void guardarFollow(int idSeguidor, int idSeguido){
-        try(
-            BufferedWriter bw = new BufferedWriter(new FileWriter("seguidores.txt", true))
-        ){
+
+    private static final String FICHEIRO = "seguidores.txt";
+
+    public static void guardarFollow(int idSeguidor, int idSeguido) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FICHEIRO, true))) {
             bw.write(idSeguidor + ";" + idSeguido);
             bw.newLine();
-        }catch(IOException e){
-            System.out.println("Erro ao guardar follow.");
+        } catch (IOException e) {
+            System.out.println("Erro ao guardar follow: " + e.getMessage());
         }
     }
 
-    // Remove uma relação de follow específica, reescrevendo o ficheiro sem ela
-    public static void removerFollow(int idSeguidor, int idSeguido){
-        ArrayList<String> linhas = new ArrayList<>();
+    public static void removerFollow(int idSeguidor, int idSeguido) {
+        ArrayList<String> linhasAManter = new ArrayList<>();
 
-        try(
-            BufferedReader br = new BufferedReader( new FileReader("seguidores.txt") )
-        ){
+        try (BufferedReader br = new BufferedReader(new FileReader(FICHEIRO))) {
             String linha;
-            while((linha = br.readLine()) != null){
-
-                if(linha.trim().isEmpty()) continue;
+            while ((linha = br.readLine()) != null) {
+                if (linha.trim().isEmpty()) continue;
 
                 String[] dados = linha.split(";");
-                if(dados.length < 2) continue;
+                if (dados.length < 2) continue;
 
-                int seguidor = Integer.parseInt(dados[0]);
-                int seguido  = Integer.parseInt(dados[1]);
+                int seg   = Integer.parseInt(dados[0]);
+                int segdo = Integer.parseInt(dados[1]);
 
-                // mantém todas as linhas exceto a que corresponde ao unfollow
-                if(!(seguidor == idSeguidor && seguido == idSeguido)){
-                    linhas.add(linha);
+                // mantém todas as linhas EXCEPTO a que corresponde ao unfollow
+                if (!(seg == idSeguidor && segdo == idSeguido)) {
+                    linhasAManter.add(linha);
                 }
             }
-        }catch(IOException e){
-            System.out.println("Nenhuma relação de follow encontrada.");
+        } catch (FileNotFoundException e) {
+            return; // nada a remover se o ficheiro não existe
+        } catch (IOException e) {
+            System.out.println("Erro ao ler seguidores: " + e.getMessage());
             return;
         }
 
-        try(
-            BufferedWriter bw =
-            new BufferedWriter(
-                new FileWriter("seguidores.txt")
-            )
-        ){
-            for(String l : linhas){
+        // Reescreve o ficheiro sem a relação removida
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(FICHEIRO))) {
+            for (String l : linhasAManter) {
                 bw.write(l);
                 bw.newLine();
             }
-        }catch(IOException e){
-            System.out.println("Erro ao reescrever ficheiro de seguidores.");
+        } catch (IOException e) {
+            System.out.println("Erro ao reescrever seguidores: " + e.getMessage());
         }
     }
 
-    // Lê o ficheiro e reconstrói as listas de seguidores/seguindo
-    // de todos os utilizadores já carregados em "lista"
-    public static void carregarFollows(ArrayList<Utilizador> lista){
-        try(
-            BufferedReader br =
-            new BufferedReader(
-                new FileReader("seguidores.txt")
-            )
-        ){
+    public static void carregarFollows(ArrayList<Utilizador> lista) {
+        try (BufferedReader br = new BufferedReader(new FileReader(FICHEIRO))) {
             String linha;
-            while((linha = br.readLine()) != null){
-
-                if(linha.trim().isEmpty()) continue;
+            while ((linha = br.readLine()) != null) {
+                if (linha.trim().isEmpty()) continue;
 
                 String[] dados = linha.split(";");
-                if(dados.length < 2) continue;
+                if (dados.length < 2) continue;
 
                 int idSeguidor = Integer.parseInt(dados[0]);
                 int idSeguido  = Integer.parseInt(dados[1]);
@@ -88,32 +73,26 @@ public class GestorSeguidores {
                 Utilizador seguidor = procurarPorId(lista, idSeguidor);
                 Utilizador seguido  = procurarPorId(lista, idSeguido);
 
-                if(seguidor != null && seguido != null){
-                    // adiciona diretamente às listas, sem passar pelo método follow()
-                    // para evitar duplicar escrita no ficheiro durante o carregamento
-                    if(!seguidor.getSeguindo().contains(seguido)){
+                if (seguidor != null && seguido != null) {
+                    // Adiciona diretamente para evitar dupla escrita no ficheiro
+                    if (!seguidor.getSeguindo().contains(seguido)) {
                         seguidor.getSeguindo().add(seguido);
                     }
-                    if(!seguido.getSeguidores().contains(seguidor)){
+                    if (!seguido.getSeguidores().contains(seguidor)) {
                         seguido.getSeguidores().add(seguidor);
                     }
                 }
             }
-        } catch(IOException e) {
-    System.out.println("Erro: " + e.getMessage()); // mostra o erro real
-}
+        } catch (FileNotFoundException e) {
+            // ficheiro ainda não existe — normal na primeira execução
+        } catch (IOException e) {
+            System.out.println("Erro ao carregar seguidores: " + e.getMessage());
+        }
     }
-
-    // auxiliar local para procurar utilizador por id dentro de uma lista já em memória
-    private static Utilizador procurarPorId(ArrayList<Utilizador> lista, int id){
-        for(Utilizador u : lista){
-            if(u.getId() == id){
-                return u;
-            }
+    private static Utilizador procurarPorId(ArrayList<Utilizador> lista, int id) {
+        for (Utilizador u : lista) {
+            if (u.getId() == id) return u;
         }
         return null;
     }
 }
-
-    
-
